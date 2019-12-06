@@ -1,13 +1,13 @@
-const Projects = require('../data/helpers/projectModel');
+const Actions = require('../data/helpers/actionModel');
 
-const validateProjectId = (req, res, next) => {
+const validateActionId = (req, res, next) => {
     const { id } = req.params;
-    Projects.get(id)
-        .then(project => {
-            if (!project) {
+    Actions.get(id)
+        .then(action => {
+            if (!action) {
                 res.status(404).json({ message: "The project with the specified ID does not exist." });
             } else {
-                req.project = project;
+                req.action = action;
                 next();
             }
         })
@@ -16,4 +16,4 @@ const validateProjectId = (req, res, next) => {
         })
 }
 
-module.exports = validateProjectId;
+module.exports = validateActionId;

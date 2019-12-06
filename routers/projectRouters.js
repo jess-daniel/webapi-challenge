@@ -46,4 +46,30 @@ router.post('/', validateProjectData, (req, res) => {
     })
 })
 
+// PUT a project
+router.put('/:id', validateProjectId, validateProjectData, (req, res) => {
+    const { id } = req.project;
+    const projectData = req.body;
+    const updatedProject = { id, ...projectData };
+    Projects.update(id, projectData)
+        .then(updated => {
+            res.status(200).json({message: "project updated successfully", updatedProject});
+        })
+        .catch(err => {
+            res.status(500).json({ error: "server error", err });
+        })
+})
+
+router.delete('/:id', validateProjectId, (req, res) => {
+    const { id } = req.project;
+    const project = req.project;
+    Projects.remove(id)
+        .then(removed => {
+            res.status(200).json({ message: "project deleted successfully", project });
+        })
+        .catch(err => {
+            res.status(500).json({ error: "server error", err });
+    })
+})
+
 module.exports = router;

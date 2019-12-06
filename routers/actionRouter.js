@@ -6,6 +6,7 @@ const Actions = require("../data/helpers/actionModel");
 // middlewares
 const validateActionId = require("../middlewares/validateActionId");
 const validateActionData = require("../middlewares/validataActionData");
+const validateActionToProject = require("../middlewares/validateActionToProject");
 
 // GET all actions 
 router.get('/', (req, res) => {
@@ -32,6 +33,20 @@ router.get('/:id', validateActionId, (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "serer error", err });
         });
+})
+
+// POST a new action
+router.post('/', validateActionData, validateActionToProject, (req, res) => {
+    const actionData = req.body;
+    // actionData.project_id should match a project id 
+    Actions.insert(actionData)
+        .then(action => {
+            const newAction = { ...action, ...actionData };
+            res.status(200).json(newAction);
+        })
+        .catch(err => {
+            res.status(500).json({ error: "server error", err });
+    })
 })
 
 // PUT action by ID

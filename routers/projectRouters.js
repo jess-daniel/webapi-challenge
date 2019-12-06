@@ -1,10 +1,12 @@
 const router = require('express').Router();
 
 const Projects = require("../data/helpers/projectModel");
+const Actions = require("../data/helpers/actionModel");
 
 // Middleware
 const validateProjectId = require("../middlewares/validateProjectId");
 const validateProjectData = require('../middlewares/validateProjectData');
+const validateActionData = require("../middlewares/validataActionData");
 
 // GET all projects
 router.get('/', (req, res) => {
@@ -40,6 +42,19 @@ router.post('/', validateProjectData, (req, res) => {
         .then(project => {
             const newProject = { ...project, ...bodyData };
             res.status(201).json({ newProject });
+        })
+        .catch(err => {
+            res.status(500).json({ error: "server error", err });
+    })
+})
+
+// POST a new action
+router.post('/:id/actions', validateProjectId, validateActionData, (req, res) => {
+    const actionData = req.body;
+    Actions.insert(actionData)
+        .then(action => {
+            const newAction = { ...action, ...actionData };
+            res.status(200).json(newAction);
         })
         .catch(err => {
             res.status(500).json({ error: "server error", err });

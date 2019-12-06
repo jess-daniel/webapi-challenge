@@ -4,8 +4,8 @@ const Projects = require("../data/helpers/projectModel");
 const Actions = require("../data/helpers/actionModel");
 
 // middlewares
-const validateActionData = require("../middlewares/validataActionData");
 const validateActionId = require("../middlewares/validateActionId");
+const validateActionData = require("../middlewares/validataActionData");
 
 // GET all actions 
 router.get('/', (req, res) => {
@@ -34,17 +34,33 @@ router.get('/:id', validateActionId, (req, res) => {
         });
 })
 
-// POST a new action
-router.post('/:id', validateActionData, (req, res) => {
+// PUT action by ID
+router.put('/:id', validateActionId, validateActionData, (req, res) => {
+    const { id } = req.action;
     const actionData = req.body;
-    Actions.insert(actionData)
-        .then(action => {
-            const newAction = { ...action, ...actionData };
-            res.status(200).json(newAction);
+    const updatedAction = { id, ...actionData };
+    Actions.update(id, actionData)
+        .then(updated => {
+            res.status(200).json({ message: "Action updated successfully", updatedAction });
+        })
+        .catch(err => {
+            res.status(500).json({ error: "serer error", err });
+    })
+})
+
+// DELETE action by ID
+router.delete('/:id', validateActionId, (req, res) => {
+    const { id } = req.action;
+    const action = req.action;
+    const removedAction = { id, ...action };
+    Actions.remove(id)
+        .then(removed => {
+            res.status(200).json({ message: "Action removed successfully", removedAction });
         })
         .catch(err => {
             res.status(500).json({ error: "server error", err });
     })
 })
+
 
 module.exports = router;

@@ -40,13 +40,25 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+We learned about routers to split up the code for different endpoints, and we learned about writing custom middleware to abstract some logic out of the router code.
+
+
 - [ ] Describe Middleware?
+
+Middleware is the gatekeeper for a route. The request goes through the middleware first where it can be manipulated or verified.
+
 
 - [ ] Describe a Resource?
 
+A resource is the thing that the the endpoint is about, ex. users, posts
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+The API should return a status code of 200 if successful. 
+
 - [ ] How can we partition our application into sub-applications?
+
+Using routers and splitting our code up by resource 
 
 ## Minimum Viable Product
 

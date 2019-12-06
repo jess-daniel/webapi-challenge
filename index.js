@@ -12,3 +12,15 @@ I need this code, just don't know where, perhaps should make some middleware, do
 
 Go code!
 */
+const server = require('./api/server');
+
+const port = process.env.PORT || 5000;
+
+// sanity check
+server.get('/', (req, res) => {
+    res.send("<h2>The server is online, have fun!</h2>");
+})
+
+server.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+})
